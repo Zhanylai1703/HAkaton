@@ -5,6 +5,7 @@ from djoser.views import UserViewSet
 from .serializers import RegisterSerializer, LoginSerializer, UserSerializer
 from .models import User
 import jwt
+from datetime import datetime
 from django.core.mail import send_mail
 from django.conf import settings
 from rest_framework import status

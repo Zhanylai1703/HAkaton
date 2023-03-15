@@ -41,6 +41,7 @@ class User(AbstractUser):
     is_moderator = models.BooleanField(
         default=False, verbose_name='Это модератор'
     )
+    email= models.EmailField(unique=True)
 
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = []
@@ -51,6 +52,9 @@ class User(AbstractUser):
         return self.email
 
 
+# class Group(models.Model):
+#     title = models.CharField(max_length=100, verbose_name='Название')
+#     user = models.ForeignKey('User', )
     
 
 

@@ -58,3 +58,4 @@ class LoginSerializer(serializers.Serializer):
 class UserSerializer(DjoserUserSerializer):
     class Meta(DjoserUserSerializer.Meta):
         fields = ('id', 'username', 'email',)
+
