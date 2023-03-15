@@ -1,14 +1,15 @@
-from rest_framework import generics, status, viewsets
+from rest_framework import generics, status, viewsets, permissions
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from djoser.views import UserViewSet
-from .serializers import RegisterSerializer, LoginSerializer, UserSerializer
-from .models import User
+from .serializers import RegisterSerializer, LoginSerializer, UserSerializer, DepartmentSerializer
+from .models import User, Department
 import jwt
 from datetime import datetime
 from django.core.mail import send_mail
 from django.conf import settings
 from rest_framework import status
+
 
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
@@ -44,8 +45,37 @@ class LoginView(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
         return Response(serializer.validated_data, status=status.HTTP_200_OK)
 
-class UserViewSet(viewsets.ViewSet):
+class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = (IsAuthenticated,)
 
+    # def get_queryset(self):
+    #     return User.objects.all()
+
+
+class DepartmentDetailView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [permissions.IsAdminUser]
+    queryset = Department.objects.all()
+    serializer_class = DepartmentSerializer
+
+class DepartmentListView(generics.ListAPIView):
+    serializer_class = DepartmentSerializer
+    queryset = Department.objects.all()
+    permission_classes = [permissions.IsAdminUser]
+
+class DepartmentCreateView(generics.CreateAPIView):
+    queryset = Department.objects.all()
+    serializer_class = DepartmentSerializer
+    permission_classes = [permissions.IsAdminUser]
+
+class DepartmentUpdateView(generics.UpdateAPIView):
+    queryset = Department.objects.all()
+    serializer_class = DepartmentSerializer
+    permission_classes = [permissions.IsAdminUser]
+
+class DepartmentDeleteView(generics.DestroyAPIView):
+    queryset = Department.objects.all()
+    serializer_class = DepartmentSerializer
+    permission_classes = [permissions.IsAdminUser]
 

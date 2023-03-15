@@ -52,9 +52,16 @@ class User(AbstractUser):
         return self.email
 
 
-# class Group(models.Model):
-#     title = models.CharField(max_length=100, verbose_name='Название')
-#     user = models.ForeignKey('User', )
-    
+class Department(models.Model):
+    name = models.CharField(max_length=50)
+    users = models.ForeignKey('User', on_delete=models.CASCADE,  related_name='departments')
 
+    def add_user(self, user, admin):
+        if admin.is_superuser:
+            self.users.add(user)
+        else:
+            raise Exception('Добавлять пользователей в группу может только администратор')
+
+    def __str__(self):
+        return self.name
 

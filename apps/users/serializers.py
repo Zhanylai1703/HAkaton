@@ -3,7 +3,7 @@ from djoser.serializers import UserSerializer as DjoserUserSerializer
 
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import User
+from .models import User, Department
 
 
 class UserTokenSerializer(serializers.Serializer):
@@ -55,7 +55,21 @@ class LoginSerializer(serializers.Serializer):
 #         model = User
 #         fields = ('id', 'username', 'email',)
 
-class UserSerializer(DjoserUserSerializer):
-    class Meta(DjoserUserSerializer.Meta):
-        fields = ('id', 'username', 'email',)
+# class UserSerializer(DjoserUserSerializer):
+#     class Meta:
+#         fields = (
+#             'id', 
+#             'username', 
+#             'email',
+#                   )
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'email', 'username')
+
+class DepartmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Department
+        fields = ['id', 'name', 'users']
+        read_only_fields = ['users']
