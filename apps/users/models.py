@@ -42,14 +42,16 @@ class User(AbstractUser):
     avatar = models.ImageField(
         upload_to='profile_images', 
         blank=True, null=True)
-    role = models.CharField(choices=ROLE_CHOICES, max_length=20)
+    role = models.CharField(
+        choices=ROLE_CHOICES, max_length=20)
+    
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = []
 
     objects = CustomUserManager()
 
     def __str__(self):
-        return self.email
+        return self.username
 
 
 class Department(models.Model):

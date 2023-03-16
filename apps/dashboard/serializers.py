@@ -8,6 +8,7 @@ class ReportSerializer(serializers.ModelSerializer):
             'id',
             'user',
             'department',
+            'week_start_date',
             'last_week',
             'current_week',
             'next_week',
@@ -15,4 +16,3 @@ class ReportSerializer(serializers.ModelSerializer):
             'created_at',
             'updated_at',
         )
-        
