@@ -28,8 +28,13 @@ class RegisterView(generics.CreateAPIView):
             'access_token': jwt.encode(user_payload, settings.SECRET_KEY, algorithm="HS256"),
             'refresh_token': jwt.encode(user_payload, settings.SECRET_KEY, algorithm="HS256")
         }
+        response_data = {
+            'user_id': user.id,
+            'tokens': tokens
+
+        }
         return Response(
-            tokens,
+            response_data,
             status=status.HTTP_201_CREATED,
             headers=headers
         )

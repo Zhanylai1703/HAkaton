@@ -12,6 +12,7 @@ class UserTokenSerializer(serializers.Serializer):
 
     class Meta:
         fields = (
+            
             'access_token',
             'refresh_token',
         )
@@ -45,6 +46,7 @@ class LoginSerializer(serializers.Serializer):
             raise serializers.ValidationError("Invalid password.")
         refresh = RefreshToken.for_user(user)
         data = {
+            'user_id': user.id,
             'refresh': str(refresh),
             'access': str(refresh.access_token),
         }

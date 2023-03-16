@@ -10,10 +10,16 @@ from .serializers import ReportSerializer
 from django.http import HttpResponse
 
 
-class ReportList(generics.ListCreateAPIView):
+class ReportListView(generics.ListAPIView):
     queryset = Report.objects.all()
     serializer_class = ReportSerializer
     permission_classes = [IsAuthenticated, IsAdminUser]
+
+class ReportCreateView(generics.CreateAPIView):
+    queryset = Report.objects.all()
+    serializer_class = ReportSerializer
+    permission_classes = [IsAuthenticated, IsAdminUser]
+
 
 
 class ReportDetail(generics.RetrieveUpdateDestroyAPIView):
