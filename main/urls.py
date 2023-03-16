@@ -7,6 +7,7 @@ from rest_framework import permissions
 from apps.users import views
 from rest_framework.routers import DefaultRouter
 from apps.users.views import UserViewSet
+from apps.dashboard.views import ReportExportView
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -33,8 +34,7 @@ api_v1 = [
     path('dep/create/', views.DepartmentCreateView.as_view()),
     path('dep/delete/', views.DepartmentDeleteView.as_view()),
     path('dep/update/', views.DepartmentUpdateView.as_view()),
-   #  path('users/', views.UserListView.as_view())
-   
+   #  path('users/', views.UserListView.as_view()  
 ]
 
 
@@ -44,5 +44,7 @@ urlpatterns = [
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('api/', include(api_v1)),
     path('users/', include('apps.users.urls')),
+   #  path('reports/', include('apps.dashboard.urls')),
+    path('save/', ReportExportView.as_view())
 
     ]

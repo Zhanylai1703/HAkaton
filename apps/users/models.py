@@ -4,15 +4,9 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import gettext_lazy as _
 
 
+
 class CustomUserManager(BaseUserManager):
-    """
-    Custom user model manager where email is the unique identifiers
-    for authentication instead of usernames.
-    """
     def create_user(self, username, password, **extra_fields):
-        """
-        Create and save a user with the given email and password.
-        """
         if not username:
             raise ValueError(_("The Email must be set"))
         email = self.normalize_email(username)
@@ -22,9 +16,6 @@ class CustomUserManager(BaseUserManager):
         return user
 
     def create_superuser(self, username, password, **extra_fields):
-        """
-        Create and save a SuperUser with the given email and password.
-        """
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
         extra_fields.setdefault("is_active", True)
@@ -35,6 +26,12 @@ class CustomUserManager(BaseUserManager):
             raise ValueError(_("Superuser must have is_superuser=True."))
         return self.create_user(username, password, **extra_fields)
 
+ROLE_CHOICES = (
+    ('DEV', 'DEV'),
+    ('PM', 'PM'),
+    ('QA', 'QA'),
+    ('BA', 'BA'),
+)
 
 class User(AbstractUser):
     password2 = models.CharField(max_length=25)
@@ -42,7 +39,10 @@ class User(AbstractUser):
         default=False, verbose_name='Это модератор'
     )
     email= models.EmailField(unique=True)
-
+    avatar = models.ImageField(
+        upload_to='profile_images', 
+        blank=True, null=True)
+    role = models.CharField(choices=ROLE_CHOICES, max_length=20)
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = []
 
@@ -54,7 +54,9 @@ class User(AbstractUser):
 
 class Department(models.Model):
     name = models.CharField(max_length=50)
-    users = models.ForeignKey('User', on_delete=models.CASCADE,  related_name='departments')
+    user =  models.ManyToManyField(
+        User, related_name='dep_users') 
+    
 
     def add_user(self, user, admin):
         if admin.is_superuser:
@@ -62,6 +64,7 @@ class Department(models.Model):
         else:
             raise Exception('Добавлять пользователей в группу может только администратор')
 
+    
     def __str__(self):
         return self.name
 

@@ -1,3 +1,57 @@
-from django.shortcuts import render
+from django.http import HttpResponse
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework import generics
+from apps.users.models import User
+from .models import Department
+import xlwt
 
-# Create your views here.
+from .models import Report
+from .serializers import ReportSerializer
+
+from django.http import HttpResponse
+
+
+class ReportList(generics.ListCreateAPIView):
+    queryset = Report.objects.all()
+    serializer_class = ReportSerializer
+    permission_classes = [IsAuthenticated, IsAdminUser]
+
+
+class ReportDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Report.objects.all()
+    serializer_class = ReportSerializer
+    permission_classes = [IsAdminUser]
+
+
+
+class ReportExportView(APIView):
+    permission_classes = [IsAdminUser]
+
+    def get(self, request, format=None):
+        response = HttpResponse(content_type='application/ms-excel')
+        response['Content-Disposition'] = 'attachment; filename="report.xls"'
+
+        wb = xlwt.Workbook(encoding='utf-8')
+        ws = wb.add_sheet('Report')
+
+
+        row_num = 0
+        columns = ['User', 'Department', 'Last Week', 'Current Week', 'Next Week', 'Deadline', 'sent' ]
+        for col_num, column_title in enumerate(columns):
+            ws.write(row_num, col_num, column_title)
+
+
+        rows = Report.objects.all().values_list('user__username', 'department__name', 'last_week', 'current_week', 'next_week', 'deadline', 'sent')
+        for row in rows:
+            row_num += 1
+            for col_num, cell_value in enumerate(row):
+                ws.write(row_num, col_num, str(cell_value))
+
+        wb.save(response)
+        return response
+
+
+
+

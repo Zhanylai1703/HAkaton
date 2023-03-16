@@ -71,5 +71,5 @@ class UserSerializer(serializers.ModelSerializer):
 class DepartmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Department
-        fields = ['id', 'name', 'users']
-        read_only_fields = ['users']
+        fields = ['id', 'name', 'user']
+        read_only_fields = ['user']
