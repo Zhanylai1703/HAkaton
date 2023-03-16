@@ -50,18 +50,7 @@ class LoginSerializer(serializers.Serializer):
         }
         return data
 
-# class UserSerializer(serializers.UserSerializer):
-#     class Meta:
-#         model = User
-#         fields = ('id', 'username', 'email',)
 
-# class UserSerializer(DjoserUserSerializer):
-#     class Meta:
-#         fields = (
-#             'id', 
-#             'username', 
-#             'email',
-#                   )
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -73,3 +62,13 @@ class DepartmentSerializer(serializers.ModelSerializer):
         model = Department
         fields = ['id', 'name', 'user']
         read_only_fields = ['user']
+
+    
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            'email',
+            'avatar',
+            'role',
+        ]
