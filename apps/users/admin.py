@@ -6,7 +6,7 @@ from apps.users.models import User, Department
 
 
 @admin.register(User)
-class UserAdmin(UserAdmin):
-    pass
+class UserAdmin(admin.ModelAdmin):
+    list_display = ('email', 'avatar', 'role')
 
 admin.site.register(Department)

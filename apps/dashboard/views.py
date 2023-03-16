@@ -1,10 +1,7 @@
 from django.http import HttpResponse
 from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework import generics
-from apps.users.models import User
-from .models import Department
 import xlwt
 
 from .models import Report

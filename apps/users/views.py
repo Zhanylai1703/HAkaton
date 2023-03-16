@@ -4,9 +4,8 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from djoser.views import UserViewSet
 from .serializers import RegisterSerializer, LoginSerializer, UserSerializer, DepartmentSerializer
 from .models import User, Department
+
 import jwt
-from datetime import datetime
-from django.core.mail import send_mail
 from django.conf import settings
 from rest_framework import status
 
@@ -48,8 +47,7 @@ class LoginView(generics.GenericAPIView):
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (IsAuthenticated,)
-
+    permission_classes = [IsAuthenticated, permissions.IsAdminUser]
 
 
 
