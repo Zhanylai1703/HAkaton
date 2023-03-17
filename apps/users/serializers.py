@@ -1,9 +1,10 @@
-from djoser.serializers import UserCreateSerializer
-from djoser.serializers import UserSerializer as DjoserUserSerializer
-
+from djoser.serializers import UserCreateSerializer,  UserSerializer 
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 from .models import User, Department
+
+
+
 
 
 class UserTokenSerializer(serializers.Serializer):
@@ -31,6 +32,7 @@ class RegisterSerializer(UserCreateSerializer):
         if password != password2:
             raise serializers.ValidationError("Passwords do not match.")
         return attrs
+    
 
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
@@ -54,15 +56,21 @@ class LoginSerializer(serializers.Serializer):
 
 
 
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ('id', 'email', 'username', 'role', )
+
 
 class DepartmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Department
         fields = ['id', 'name', 'user']
-        read_only_fields = ['user']
+
+class ProfileSerializer(UserSerializer):
+    class Meta(UserSerializer.Meta):
+        fields = [
+            'id',
+            'first_name', 
+            'last_name',
+            'role',
+            ]
+
 
     

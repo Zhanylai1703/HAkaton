@@ -57,7 +57,7 @@ class User(AbstractUser):
 class Department(models.Model):
     name = models.CharField(max_length=50)
     user =  models.ManyToManyField(
-        User, related_name='dep_users') 
+        'User', related_name='dep_users', blank=True) 
     
 
     def add_user(self, user, admin):

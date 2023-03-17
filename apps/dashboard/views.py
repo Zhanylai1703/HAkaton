@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from rest_framework import generics
 import xlwt
 
@@ -13,7 +13,7 @@ from django.http import HttpResponse
 class ReportListView(generics.ListAPIView):
     queryset = Report.objects.all()
     serializer_class = ReportSerializer
-    permission_classes = [IsAuthenticated, IsAdminUser]
+    permission_classes = [AllowAny ,]
 
 class ReportCreateView(generics.CreateAPIView):
     queryset = Report.objects.all()
@@ -25,7 +25,7 @@ class ReportCreateView(generics.CreateAPIView):
 class ReportDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Report.objects.all()
     serializer_class = ReportSerializer
-    permission_classes = [IsAuthenticated, IsAdminUser]
+    permission_classes = [AllowAny ,]
 
 
 
