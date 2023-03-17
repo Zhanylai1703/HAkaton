@@ -12,9 +12,9 @@ from apps.users.views import UserViewSet
 
 schema_view = get_schema_view(
    openapi.Info(
-      title="user API",
+      title="EPAM",
       default_version='v1',
-      description="Test description",
+      description="username:user / password:user",
       terms_of_service="https://www.google.com/policies/terms/",
       contact=openapi.Contact(email="contact@snippets.local"),
       license=openapi.License(name="BSD License"),
@@ -30,11 +30,9 @@ urlpatterns = router.urls
 api_v1 = [
     path('reg/', views.RegisterView.as_view()),
     path('login/', views.LoginView.as_view()),
-    path('profiles/', views.ProfileCreateView.as_view()),
-    path('prpfile/', views.ProfileCreateView.as_view()),
-    path('profile/', views.ProfileRetrieveUpdateDestroyView.as_view())
+    path('resetpassword/', views.ResetPasswordAPIView.as_view()),
+    path('current_user/', views.CurrentUserView.as_view()),
     
-
 ]
 
 

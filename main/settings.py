@@ -67,6 +67,12 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'main.urls'
 CORS_ORIGIN_ALLOW_ALL = True 
 
+# smtp
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'kasymkulovajanylai@gmail.com'
+EMAIL_HOST_PASSWORD = 'twlwjtucfhoyzbph'
+EMAIL_PORT = 587
 
 TEMPLATES = [
     {

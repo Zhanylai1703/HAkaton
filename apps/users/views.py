@@ -2,12 +2,19 @@ from rest_framework import generics, status, viewsets, permissions
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from djoser.views import UserViewSet
-from .serializers import RegisterSerializer, LoginSerializer, UserSerializer, DepartmentSerializer, ProfileSerializer
+from .serializers import (RegisterSerializer, 
+                          LoginSerializer, UserSerializer, 
+                          DepartmentSerializer, 
+                          ResetPasswordSerializer)
 from .models import User, Department
 from django.contrib.auth import get_user_model
+from django.core.mail import send_mail
+from django.conf import settings
 import jwt
 from django.conf import settings
 from rest_framework import status
+
+
 
 
 User = get_user_model()
@@ -52,6 +59,32 @@ class LoginView(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
         return Response(serializer.validated_data, status=status.HTTP_200_OK)
 
+
+class ResetPasswordAPIView(generics.GenericAPIView):
+    permission_classes = [permissions.AllowAny]
+    serializer_class = ResetPasswordSerializer
+
+    def post(self, request, *args, **kwargs):
+        email = request.data.get('email')
+        if email:
+            try:
+                user = User.objects.get(email=email)
+            except User.DoesNotExist:
+                return Response({'error': 'No user found with this email'}, status=400)
+            password = User.objects.make_random_password()
+            user.set_password(password)
+            user.save()
+            send_mail(
+                'Password Reset Request',
+                f'Ваш новый пароль  {password}',
+                settings.EMAIL_HOST_USER,
+                [email],
+                fail_silently=False,
+            )
+            return Response({'success': 'Password reset email has been sent'})
+        return Response({'error': 'Email field is required'}, status=400)
+    
+
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -60,26 +93,17 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 
+class CurrentUserView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
 
-class ProfileCreateView(generics.CreateAPIView):
-    """Создание профиля"""
-    queryset = User.objects.all()
-    serializer_class = ProfileSerializer
-    permission_classes = (permissions.IsAuthenticated,)
+    def get(self, request, format=None):
+        serializer = UserSerializer(request.user)
+        return Response(serializer.data)
 
-
-class ProfileListView(generics.ListAPIView):
-    """Получение списка профилей"""
-    queryset = User.objects.all()
-    serializer_class = ProfileSerializer
-    permission_classes = (permissions.IsAdminUser)
+    def get_serializer_class(self):
+        return UserSerializer
 
 
-class ProfileRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    """Получение, обновление и удаление профиля"""
-    queryset = User.objects.all()
-    serializer_class = ProfileSerializer
-    permission_classes = (permissions.IsAdminUser, IsAuthenticated,)
 
 
 class DepartmentViewSet(viewsets.ModelViewSet):

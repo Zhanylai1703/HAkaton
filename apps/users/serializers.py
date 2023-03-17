@@ -54,23 +54,23 @@ class LoginSerializer(serializers.Serializer):
         }
         return data
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'email', 'username', 'role', 'avatar' )
 
-
-
+class ResetPasswordSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'email', 'username']
 
 class DepartmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Department
         fields = ['id', 'name', 'user']
 
-class ProfileSerializer(UserSerializer):
-    class Meta(UserSerializer.Meta):
-        fields = [
-            'id',
-            'first_name', 
-            'last_name',
-            'role',
-            ]
+
+
 
 
     
