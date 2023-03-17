@@ -85,4 +85,4 @@ class ProfileRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
 class DepartmentViewSet(viewsets.ModelViewSet):
     serializer_class = DepartmentSerializer
     queryset = Department.objects.all()
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = []

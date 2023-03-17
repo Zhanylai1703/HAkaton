@@ -18,7 +18,7 @@ class ReportListView(generics.ListAPIView):
 class ReportCreateView(generics.CreateAPIView):
     queryset = Report.objects.all()
     serializer_class = ReportSerializer
-    permission_classes = [IsAuthenticated, IsAdminUser]
+    permission_classes = []
 
 
 
