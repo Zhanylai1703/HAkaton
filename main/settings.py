@@ -70,8 +70,8 @@ CORS_ORIGIN_ALLOW_ALL = True
 # smtp
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'kasymkulovajanylai@gmail.com'
-EMAIL_HOST_PASSWORD = 'twlwjtucfhoyzbph'
+EMAIL_HOST_USER = 'zhanl8602@gmail.com'
+EMAIL_HOST_PASSWORD = 'zobxgrpcgkyhuhgm'
 EMAIL_PORT = 587
 
 TEMPLATES = [

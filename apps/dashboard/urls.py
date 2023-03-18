@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import (ReportListView, ReportDetail, 
                     ReportExportView, ReportCreateView, 
-                    LastWeekReportView)
+                    LastWeekReportView, UserReportView)
 
 urlpatterns =[
     path('reports/', ReportListView.as_view()),
@@ -9,5 +9,6 @@ urlpatterns =[
     path('save/<int:department_id>/', ReportExportView.as_view()),
     path('report/', ReportCreateView.as_view()),
     path('lastweek/', LastWeekReportView.as_view()),
+    path('user-reports/', UserReportView.as_view())
    
 ]
