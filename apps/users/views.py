@@ -1,20 +1,19 @@
+import jwt
+
+from django.contrib.auth import get_user_model
+from django.core.mail import send_mail
+from django.conf import settings
+
 from rest_framework import generics, status, viewsets, permissions
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from djoser.views import UserViewSet
+
 from .serializers import (RegisterSerializer, 
                           LoginSerializer, UserSerializer, 
                           DepartmentSerializer, 
                           ResetPasswordSerializer)
-from .models import User, Department
-from django.contrib.auth import get_user_model
-from django.core.mail import send_mail
-from django.conf import settings
-import jwt
-from django.conf import settings
-from rest_framework import status
 
-
+from apps.users.models import User, Department
 
 
 User = get_user_model()
@@ -52,7 +51,6 @@ class RegisterView(generics.CreateAPIView):
 
 class LoginView(generics.GenericAPIView):
     serializer_class = LoginSerializer
-    permission_classes = []
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -91,8 +89,6 @@ class UserViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated, permissions.IsAdminUser]
 
 
-
-
 class CurrentUserView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
 
@@ -104,9 +100,6 @@ class CurrentUserView(generics.GenericAPIView):
         return UserSerializer
 
 
-
-
 class DepartmentViewSet(viewsets.ModelViewSet):
     serializer_class = DepartmentSerializer
     queryset = Department.objects.all()
-    permission_classes = []

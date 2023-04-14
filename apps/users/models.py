@@ -4,7 +4,6 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import gettext_lazy as _
 
 
-
 class CustomUserManager(BaseUserManager):
     def create_user(self, username, password, **extra_fields):
         if not username:
@@ -26,6 +25,7 @@ class CustomUserManager(BaseUserManager):
             raise ValueError(_("Superuser must have is_superuser=True."))
         return self.create_user(username, password, **extra_fields)
 
+
 ROLE_CHOICES = (
     ('DEV', 'DEV'),
     ('PM', 'PM'),
@@ -34,16 +34,24 @@ ROLE_CHOICES = (
 )
 
 class User(AbstractUser):
-    password2 = models.CharField(max_length=25)
-    is_moderator = models.BooleanField(
-        default=False, verbose_name='Это модератор'
+    password2 = models.CharField(
+        max_length=25
     )
-    email= models.EmailField(unique=True)
+    is_moderator = models.BooleanField(
+        default=False, 
+        verbose_name='Это модератор'
+    )
+    email= models.EmailField(
+        unique=True
+    )
     avatar = models.ImageField(
         upload_to='profile_images', 
-        blank=True, null=True)
+        blank=True, null=True
+    )
     role = models.CharField(
-        choices=ROLE_CHOICES, max_length=20)
+        choices=ROLE_CHOICES, 
+        max_length=20
+    )
     
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = []
@@ -55,18 +63,20 @@ class User(AbstractUser):
 
 
 class Department(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(
+        max_length=50
+    )
     user =  models.ManyToManyField(
-        'User', related_name='dep_users', blank=True) 
+        'User', related_name='dep_users', 
+        blank=True
+    ) 
     
-
     def add_user(self, user, admin):
         if admin.is_superuser:
             self.users.add(user)
         else:
             raise Exception('Добавлять пользователей в группу может только администратор')
 
-    
     def __str__(self):
         return self.name
 

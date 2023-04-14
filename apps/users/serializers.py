@@ -1,10 +1,9 @@
-from djoser.serializers import UserCreateSerializer,  UserSerializer 
+from djoser.serializers import UserCreateSerializer
+
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import User, Department
 
-
-
+from apps.users.models import User, Department
 
 
 class UserTokenSerializer(serializers.Serializer):
@@ -13,10 +12,10 @@ class UserTokenSerializer(serializers.Serializer):
 
     class Meta:
         fields = (
-            
             'access_token',
             'refresh_token',
         )
+
 
 class RegisterSerializer(UserCreateSerializer):
     password = serializers.CharField(write_only=True)
@@ -24,7 +23,12 @@ class RegisterSerializer(UserCreateSerializer):
 
     class Meta(UserCreateSerializer.Meta):
         model = User
-        fields = ('email', 'username', 'password', 'password2')
+        fields = (
+            'email', 
+            'username', 
+            'password', 
+            'password2'
+            )
 
     def validate(self, attrs):
         password = attrs.get('password')
@@ -53,21 +57,38 @@ class LoginSerializer(serializers.Serializer):
             'access': str(refresh.access_token),
         }
         return data
+    
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'email', 'username', 'role', 'avatar' )
+        fields = (
+            'id', 
+            'email', 
+            'username', 
+            'role', 
+            'avatar' 
+            )
+        
 
 class ResetPasswordSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'email', 'username']
+        fields = [
+            'id', 
+            'email', 
+            'username'
+            ]
+
 
 class DepartmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Department
-        fields = ['id', 'name', 'user']
+        fields = [
+            'id', 
+            'name', 
+            'user'
+            ]
 
 
 

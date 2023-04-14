@@ -1,7 +1,9 @@
 from django.urls import path
-from .views import (ReportListView, ReportDetail, 
+
+from apps.dashboard.views import (ReportListView, ReportDetail, 
                     ReportExportView, ReportCreateView, 
                     LastWeekReportView, UserReportView)
+
 
 urlpatterns =[
     path('reports/', ReportListView.as_view()),

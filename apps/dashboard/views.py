@@ -1,18 +1,18 @@
 from django.http import HttpResponse
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
+
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from rest_framework.exceptions import PermissionDenied
 from rest_framework import generics
 from rest_framework.response import Response
+
 import xlwt
 
 from apps.users.models import Department
 from .models import Report
 from .serializers import ReportSerializer
-
-from django.http import HttpResponse
 
 
 class ReportListView(generics.ListAPIView):
@@ -20,9 +20,6 @@ class ReportListView(generics.ListAPIView):
     serializer_class = ReportSerializer
     permission_classes = [AllowAny ,]
 
-
-
-        
 
 class ReportCreateView(generics.CreateAPIView):
     queryset = Report.objects.all()
@@ -35,7 +32,6 @@ class ReportCreateView(generics.CreateAPIView):
         if user not in Department.objects.get(id=department_id).user.all():
             raise PermissionDenied('You do not have permission to create a report for this department.')
         serializer.save(user=user)
-
 
 
 class ReportDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -85,6 +81,7 @@ class ReportExportView(APIView):
 
         wb.save(response)
         return response
+
 
 class UserReportView(APIView):
     permission_classes = [IsAuthenticated]

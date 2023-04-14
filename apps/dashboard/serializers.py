@@ -1,6 +1,5 @@
 from rest_framework import serializers
-from .models import Report
-import datetime
+from apps.dashboard.models import Report
 
 
 class ReportSerializer(serializers.ModelSerializer):
